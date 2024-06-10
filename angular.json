@@ -32,7 +32,9 @@
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "@angular/material/prebuilt-themes/azure-blue.css",
+              "src/styles.scss",
+              "./node_modules/bootstrap-grid-only-css/dist/css/bootstrap-grid.css"
             ],
             "scripts": [],
             "server": "src/main.server.ts",
@@ -96,6 +98,7 @@
               }
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -103,5 +106,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "e7682f2d-55b1-4412-ba48-0d58d7f7148b"
   }
 }
