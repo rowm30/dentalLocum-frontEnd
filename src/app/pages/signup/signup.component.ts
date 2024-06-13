@@ -1,24 +1,25 @@
 import { Component, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {HttpClient, HttpClientModule, HttpHeaders} from '@angular/common/http'; // Import HttpClientModule here too
+import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
+import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
-import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-signup',
   standalone: true,
   imports: [
     CommonModule,
-    HttpClientModule, // Make sure to include HttpClientModule here
+    HttpClientModule,
     MatFormFieldModule,
     MatSelectModule,
     MatCardModule,
     MatInputModule,
-    FormsModule,
+    ReactiveFormsModule,
     MatButtonModule
   ],
   templateUrl: './signup.component.html',
@@ -26,39 +27,58 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class SignupComponent {
   roles = ['LOCUM', 'CLINIC', 'ADMIN'];
-  selectedRole: string | undefined;
-  currentDate: Date = new Date();
 
-  public user = {
-    email: '',
-    password: '',
-    name: '',
-    role: '',
-    credentials: '',
-    specialization: '',
-    registrationNumber: '',
-    registrationDate: this.currentDate.toISOString().split('T')[0]
+  signupForm = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+    name: new FormControl('', Validators.required),
+    role: new FormControl('', Validators.required),
+    credentials: new FormControl(''),
+    specialization: new FormControl(''),
+    registrationNumber: new FormControl(''),
+    registrationDate: new FormControl({value: new Date().toISOString().split('T')[0], disabled: true})
+  });
+
+  constructor(private http: HttpClient) {}
+
+  formSubmit() {
+    if (this.signupForm.valid) {
+      const headers = new HttpHeaders().set('Content-Type', 'application/json');
+      this.http.post('http://localhost:8080/user/create', this.signupForm.value, { headers }).subscribe(
+        response => {
+          console.log(response);
+          Swal.fire('Success', 'User created successfully', 'success');
+        },
+        error => {
+          console.error(error);
+          Swal.fire('Error', 'There was a problem creating the user', 'error');
+        }
+      );
+    } else {
+      this.displayErrors();
+    }
   }
 
-  constructor(private http: HttpClient) {} // HttpClient should now be available
+  displayErrors() {
+    for (const name of Object.keys(this.signupForm.controls)) {
+      const control = this.signupForm.get(name);
+      if (control && control.errors) {
+        const errors = control.errors;
+        const firstKey = Object.keys(errors)[0];
+        const message = this.getErrorMessage(name, firstKey as keyof typeof errors, errors[firstKey]);
+        Swal.fire('Error', message, 'error');
+        break; // Only show the first error
+      }
+    }
+  }
 
-  // Function to submit the form
-  formSubmit() {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json');
-    const body = {
-      name: this.user.name,
-      password: this.user.password,
-      email: this.user.email,
-      role: this.user.role,
-      credentials: this.user.credentials,
-      specialization: this.user.specialization,
-      registrationNumber: this.user.registrationNumber
+  getErrorMessage(field: string, validatorName: keyof any, validatorValue?: any): string {
+    const messages: { [key: string]: string } = {
+      required: `${field} is required`,
+      email: 'Please enter a valid email address',
+      minlength: `${field} must be at least ${(validatorValue as any).requiredLength} characters long`
     };
 
-    this.http.post('http://localhost:8080/user/create', body, { headers })
-      .subscribe(
-        response => console.log(response),
-        error => console.error(error)
-      );
+    return  'Invalid field';
   }
 }
