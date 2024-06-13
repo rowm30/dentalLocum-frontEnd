@@ -1,7 +1,15 @@
-/* sign-up.component.scss */
-
+.container {
+  height: 100vh; // Use the full height of the viewport
+  display: grid;
+  place-items: center; // Centers the content both horizontally and vertically
+}
 
 mat-card {
+  width: 100%; // Full width of the column
+  max-width: 600px; // Increased maximum width of the card
+  margin: auto; // Center the card horizontally in the column
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); // Adds subtle shadow for depth
+
   mat-card-title {
     text-align: center;
     margin-bottom: 20px;
@@ -9,20 +17,14 @@ mat-card {
 
   mat-card-content {
     form {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      display: grid;
+      grid-template-columns: 1fr; // Ensures content is in one column
+      gap: 20px; // Provides space between form fields
 
-      mat-form-field {
-        width: 100%; // Full width mat-form-field within the form
-
-        input, mat-select {
-          width: 100%; // Ensures the input and select elements fill the form field
-        }
-      }
-
-      button {
-        margin-top: 20px;
+      mat-form-field, button {
+        width: 100%; // Full width for the form field and button within the form
+        max-width: 560px; // Increased max width to make form fields wider
+        margin: 0 auto; // Center form fields and button horizontally
       }
     }
   }
