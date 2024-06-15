@@ -1,0 +1,55 @@
+.container {
+  height: 100vh; // Full viewport height
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 0; // No extra padding on top
+
+  .login-card {
+    width: 100%;
+    max-width: 600px; // Wider card for better alignment with the signup form
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); // Stronger shadow for depth
+
+    mat-card-title {
+      text-align: center;
+      color: #333; // Darker color for better readability
+      font-size: 24px; // Larger font size
+      margin-bottom: 20px;
+    }
+
+    mat-card-content {
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        mat-form-field {
+          width: 100%;
+          max-width: 560px; // Same as the signup form
+          margin-bottom: 20px; // Uniform spacing
+
+          .mat-form-field-wrapper {
+            padding-bottom: 6px; // Adjust padding for visual balance
+          }
+        }
+
+        .button-row {
+          width: 100%;
+          max-width: 560px;
+          display: flex;
+          justify-content: space-between; // Keeps buttons spaced out evenly
+
+          button {
+            flex: 1; // Each button takes equal space
+            margin-right: 8px; // Consistent spacing between buttons
+
+            &:last-child {
+              margin-right: 0; // No margin on the right for the last button
+            }
+          }
+        }
+      }
+    }
+  }
+}

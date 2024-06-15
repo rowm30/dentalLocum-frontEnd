@@ -1,1 +1,33 @@
-<p>navbar works!</p>
+<mat-sidenav-container class="example-container">
+  <mat-sidenav #sidenav mode="over" opened="false">
+    <mat-nav-list>
+      <a mat-list-item [routerLink]="['/home']"><mat-icon>home</mat-icon> Home</a>
+      <a mat-list-item [routerLink]="['/login']"><mat-icon>login</mat-icon> Login</a>
+      <a mat-list-item [routerLink]="['/signup']"><mat-icon>person_add</mat-icon> Sign Up</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar>
+      <button mat-icon-button (click)="sidenav.toggle()" aria-label="Toggle sidenav">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span>Exam Portal Revision</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button [routerLink]="['/home']" aria-label="Home icon-button">
+        <mat-icon>home</mat-icon>
+      </button>
+      <button mat-icon-button [routerLink]="['/login']" aria-label="Login icon-button">
+        <mat-icon>login</mat-icon>
+      </button>
+      <button mat-icon-button [routerLink]="['/signup']" aria-label="Sign up icon-button">
+        <mat-icon>person_add</mat-icon>
+      </button>
+      <button mat-icon-button aria-label="Example icon-button with favorite icon">
+        <mat-icon>favorite</mat-icon>
+      </button>
+      <button mat-icon-button aria-label="Example icon-button with share icon">
+        <mat-icon>share</mat-icon>
+      </button>
+    </mat-toolbar>
+  </mat-sidenav-content>
+</mat-sidenav-container>
